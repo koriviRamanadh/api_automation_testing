@@ -8,10 +8,13 @@ public class AuthEndpoints {
     private static final String Auth_path = "/auth";
 
     public static Response generateToken(String username, String password){
-        String requestBody = String.format("{\"username\":%s\",\"password\":\"%s\"}", username, password);
-        return given().spec(RestClient.getRequestSpec()).body(requestBody)
+        String requestBody = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", username, password);
+        System.out.println(requestBody);
+        Response response = given().spec(RestClient.getRequestSpec()).body(requestBody)
                       .when().post(Auth_path)
                       .then().extract().response();
+        System.out.println(response);
+        return response;
     }
 
 }

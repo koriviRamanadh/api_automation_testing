@@ -13,7 +13,7 @@ public class RestClient {
     private static RequestSpecification requestSpec;
 
     public static void setUp(){
-        requestSpec = new RequestSpecBuilder().setBaseUri(ConfigReader.getBaseUrl()).setContentType(ContentType.JSON).setAccept(ContentType.JSON).addFilter(new RequestLoggingFilter()).addFilter(new ResponseLoggingFilter()).build();
+        requestSpec = new RequestSpecBuilder().setBaseUri(ConfigReader.getBaseUrl()).setContentType(ContentType.JSON).setAccept("application/json").addFilter(new RequestLoggingFilter()).addFilter(new ResponseLoggingFilter()).build();
     }
 
     public static RequestSpecification getRequestSpec(){
@@ -23,7 +23,7 @@ public class RestClient {
     public static RequestSpecification getAuthRequestSpec(String token){
         return new RequestSpecBuilder()
         .addRequestSpecification(requestSpec)
-        .addHeader("cookie","token=" + token)
+        .addHeader("Cookie","token=" + token)
         .build();
     }
 }
