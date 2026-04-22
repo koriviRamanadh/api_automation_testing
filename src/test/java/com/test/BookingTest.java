@@ -12,6 +12,9 @@ import com.test.models.Booking;
 import com.test.models.BookingDates;
 import com.test.models.BookingResponse;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
 
 public class BookingTest extends BaseTest {
@@ -37,6 +40,7 @@ public class BookingTest extends BaseTest {
     }
 
     @Test(priority = 1, description = "GET booking should return list of booking id's")
+    @Description("verify that GET all booking returns 200 and a non empty list")
     public void testGetAllBookings(){
         Response response = BookingEndPoints.getAllBookings();
         Assert.assertEquals(response.statusCode(), 200,"Get all the bookings with status code 200");
@@ -44,6 +48,8 @@ public class BookingTest extends BaseTest {
     }
 
     @Test(priority = 2, description = "POST booking should create a new booking and return booking ID")
+    @Description("create a new booking and verify bookingid, firstname, lastname in the response")
+    @Severity(SeverityLevel.CRITICAL)
     public void testCreateBooking(){
         Booking booking = buildSampleBooking("xender", "Goi", 2000);
         Response response = BookingEndPoints.createBooking(booking);
@@ -56,6 +62,7 @@ public class BookingTest extends BaseTest {
     }
 
     @Test(priority = 3,description = "GET booking id should return the correct booking",dependsOnMethods = "testCreateBooking")
+    @Description("Fetch the booking created in previous test and verify its data")
     public void testGetBookingByID(){
         Response response = BookingEndPoints.getBookingById(createdBookingId);
         Assert.assertEquals(response.statusCode(),200,"Get booking by Id should return 200");
@@ -66,6 +73,7 @@ public class BookingTest extends BaseTest {
     }
 
     @Test(priority = 4, description = "PUT booking id shoudl fully update the booking",dependsOnMethods = "testCreateBooking")
+    @Description("Update all field of the booking using PUT and verify the changes")
     public void testFullUpdateBooking(){
         Booking updateBooking = buildSampleBooking("UpdateFirst", "UpdateLastname", 999);
         Response response = BookingEndPoints.updateBooking(createdBookingId, updateBooking, authToken);
@@ -76,6 +84,7 @@ public class BookingTest extends BaseTest {
     }
 
     @Test(priority = 5, description = "PATCH booking id should update only specified field",dependsOnMethods = "testCreateBooking")
+    @Description("Partially update only the firstname field and verify other fields unchanged")
     public void testPartialUpdateBooking(){
         String partialBody = "{\"firstname\":\"patchedName\"}";
         Response response = BookingEndPoints.patialUpdateBooking(createdBookingId, partialBody,authToken);
@@ -84,6 +93,7 @@ public class BookingTest extends BaseTest {
     }
 
     @Test(priority = 6, description = "Delete booking id should delete the booking",dependsOnMethods = "testCreateBooking")
+    @Description("Delete the booking and verify it returns 404 when fetched again")
     public void testDeleteBooking(){
         Response delResponse = BookingEndPoints.deleteBooking(createdBookingId, authToken);
         Assert.assertEquals(delResponse.statusCode(),201,"Delete should return 201");
@@ -101,6 +111,7 @@ public class BookingTest extends BaseTest {
     }
     
     @Test(priority = 7, dataProvider = "multipleBookingData",description = "Data Drivern: Create multiple bookings using DataProvider",dependsOnMethods = "testCreateBooking")
+    @Description("Data-driven test: create booking for multiple guests and verify each")
     public void testCreateMultipleBookings(String firstname, String lastname, int price){
         Booking booking = buildSampleBooking(firstname, lastname, price);
         Response response = BookingEndPoints.createBooking(booking);

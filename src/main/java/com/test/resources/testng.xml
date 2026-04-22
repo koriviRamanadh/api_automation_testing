@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="SauceDemo Automation Suite">
 
-    <test name="Authentication Tests">
+    <!--test name="Authentication Tests">
         <classes>
             <class name="com.test.AuthTest"/>
         </classes>
@@ -11,6 +11,11 @@
     <test name="Booking Tests">
         <classes>
             <class name="com.test.BookingTest"/>
+        </classes>
+    </test>-->
+     <test name="Booking Tests">
+        <classes>
+            <class name="com.test.SchemaValidationTest"/>
         </classes>
     </test>
 
